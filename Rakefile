@@ -8,6 +8,11 @@ namespace :server do
     ActiveRecord::Migrator.migrate('server/migrations', ENV["VERSION"] ? ENV["VERSION"].to_i : nil )
   end
 
+  desc "Deletes all TEST origin treasure from the db."
+  task :clean => :environment do
+    Treasure.where( :origin => 'TEST' ).destroy_all
+  end
+
   task :environment do
     db = URI.parse(ENV['DATABASE_URL'] || 'postgres://localhost/mydb')
 
