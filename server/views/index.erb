@@ -33,7 +33,8 @@
         padding: 0;
       }
 
-      #music tr { border-bottom: 1px solid #a86; }
+      #music tr { border-bottom: 1px solid #a86; border-radius: 10px; }
+      #music tr:hover { background-color: #FCF7D1 }
       #music td { padding: 3px; }
     </style>
 
@@ -127,15 +128,7 @@
             <td><%= t.artist %></td>
             <td style="text-align: center"><%= t.person %></td>
             <td style="text-align: center"><%= t.origin %></td>
-            <td style="text-align: center"><%= 
-            case t.provider 
-            when /rdio/i
-              '<img src="/images/rdio.jpg" style="height:20px;">'
-            else
-              t.provider
-            end
-            
-            %></td>
+            <td style="text-align: center"><%= t.provider %></td>
           </tr>
         <% end %>
       </table>
