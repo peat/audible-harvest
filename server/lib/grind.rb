@@ -119,13 +119,9 @@ class MHDApp
     begin
       api_url = "http://api.tumblr.com/v2/blog/#{url.host}/posts/audio?api_key=#{TUMBLR_API_KEY}"
       data = JSON.parse(open(api_url).read)
-
-      puts "TUMBLR DATA"
-      puts JSON.pretty_generate( data )
-
       most_recent = data['response']['posts'].last
 
-      if most_recent
+      if most_recent and most_recent['track_name'] and most_recent['artist']
         treasure = {
           :track => most_recent['track_name'],
           :artist => most_recent['artist'],
