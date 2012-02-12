@@ -4,6 +4,7 @@
     <link href='http://fonts.googleapis.com/css?family=Lobster' rel='stylesheet' type='text/css'>
     <link href='http://fonts.googleapis.com/css?family=Abel' rel='stylesheet' type='text/css'>
     <link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/3.4.1/build/cssreset/cssreset-min.css">
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
     <script type="text/javascript" src="https://www.google.com/jsapi"></script>
 
 
@@ -36,6 +37,14 @@
       #music tr { border-bottom: 1px solid #a86; border-radius: 10px; }
       #music tr:hover { background-color: #FCF7D1 }
       #music td { padding: 3px; border-radius: 10px; }
+
+      #player { 
+        position: absolute;
+        z-index: 10;
+        bottom: 0;
+        width: 100%;
+        height: 40px;
+      }
     </style>
 
 
@@ -96,6 +105,25 @@
         chart.draw(data, options);
       }
     </script>
+
+    <script>
+
+      function getTrack( search ) {
+        var client_key = 'aba5e923e867c06bdda5e282e933341d';        
+        $.get(
+          'http://api.soundcloud.com/tracks.json', 
+          { 'client_id' : client_key, 'q' : search },
+          function(data) { console.log(data); } 
+        );
+      }
+
+      $().ready(function() {
+        $('.track').click( function() {
+          var search = $(this).attr('data-search');
+          getTrack( search );
+        })
+      });
+    </script>
   </head>
   <body>
     <header>
@@ -103,6 +131,9 @@
     </header>
 
     <div id="sidebar">
+
+      <div id="player"></div>
+
       <h3>Social Networks</h3>
       <div id="network-chart"></div>
 
@@ -117,7 +148,7 @@
       <h3>Music</h3>
       <table id="music">
         <% Treasure.all.each do |t| %>
-          <tr>
+          <tr class="track" data-search="<%= "#{t.track} #{t.artist}" %>">
             <td><%= 
               if t.track.length > 20
                 "#{t.track.slice(0,20)}..." 
@@ -133,7 +164,6 @@
         <% end %>
       </table>
     </div>
-
 
   </body>
 </html>
