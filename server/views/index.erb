@@ -82,12 +82,7 @@
         var data = new google.visualization.DataTable();
         data.addColumn('string', 'Provider');
         data.addColumn('number', 'Tracks');
-        data.addRows([
-          ['Soundcloud',   8],
-          ['Spotify', 7],
-          ['Rdio',    6],
-          ['Tumblr',  5]
-        ]);
+        data.addRows(<%= Treasure.people_data %>);
 
         var chart = new google.visualization.PieChart(document.getElementById('people-chart'));
         chart.draw(data, chartOptions);
