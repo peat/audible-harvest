@@ -1,17 +1,129 @@
+<!DOCTYPE html>
 <html>
-  <body>
-    <h1>Audible Harvest</h1>
-    <ul>
-      <li><a href="/snarf.html">Snarf</a></li>
-      <li><a href="/grind.html">Grind</a></li>
-    </ul>
+  <head>
+    <link href='http://fonts.googleapis.com/css?family=Lobster' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/3.4.1/build/cssreset/cssreset-min.css">
+    <script type="text/javascript" src="https://www.google.com/jsapi"></script>
 
-    <h3>Hits:</h3>
-    <ul>
-      <% Treasure.all.each do |t| %>
-        <li><%= t.pretty_print %></li>
-      <% end %>
-    </ul>
+
+    <style>
+      body { margin: 0; padding: 0;}
+      header { padding: 0.5em; background-color: #FCF7D1; border-bottom: 1px solid #B52C00; box-shadow: 0px 0px 10px #888; margin-bottom: 1em; }
+      h1 { font-family: Lobster; color: #B52C00; font-size: 4em; text-shadow: 2px 2px 2px #fff; width: 500px; margin: auto; }
+      h3 { font-family: Lobster; font-size: 2em; color: #8C0005; margin: 0.5em 0; text-shadow: 2px 2px 2px #FCF7D1 }
+
+      #sidebar {
+        float: right;
+        width: 400px;
+        text-align: center;
+        margin-right: 5em;
+      }
+
+      #sidebar>div { padding: 0; margin-right: -100px; }
+
+      #main { float: left; margin-left: 5em; }
+
+      #music {
+        display: block;
+        width: 100%;
+        border-radius: 10px;
+        border: 2px solid #8C0005;
+        margin: 0;
+        padding: 0;
+      }
+    </style>
+
+
+    <script type="text/javascript">
+      google.load("visualization", "1", {packages:["corechart"]});
+      google.setOnLoadCallback(drawNetworkChart);
+      google.setOnLoadCallback(drawServiceChart);
+      google.setOnLoadCallback(drawPeopleChart);
+
+      function drawNetworkChart() {
+        var data = new google.visualization.DataTable();
+
+        data.addColumn('string', 'Network');
+        data.addColumn('number', 'Tracks');
+        data.addRows([
+          ['Twitter',   11],
+          ['Facebook',  7],
+          ['IRC',       1]
+        ]);
+
+        var options = { width: 350, height: 200, is3D: true, chartArea: {top:0, left:0, height:'100%', width:'100%'} };
+
+        var chart = new google.visualization.PieChart(document.getElementById('network-chart'));
+        chart.draw(data, options);
+      }
+
+      function drawServiceChart() {
+        var data = new google.visualization.DataTable();
+        data.addColumn('string', 'Provider');
+        data.addColumn('number', 'Tracks');
+        data.addRows([
+          ['Soundcloud',   8],
+          ['Spotify', 7],
+          ['Rdio',    6],
+          ['Tumblr',  5]
+        ]);
+
+        var options = { width: 350, height: 200, is3D: true, chartArea: {top:0, left:0, height:'100%', width:'100%'} };
+
+        var chart = new google.visualization.PieChart(document.getElementById('service-chart'));
+        chart.draw(data, options);
+      }
+
+      function drawPeopleChart() {
+        var data = new google.visualization.DataTable();
+        data.addColumn('string', 'Provider');
+        data.addColumn('number', 'Tracks');
+        data.addRows([
+          ['Soundcloud',   8],
+          ['Spotify', 7],
+          ['Rdio',    6],
+          ['Tumblr',  5]
+        ]);
+
+        var options = { width: 350, height: 200, is3D: true, chartArea: {top:0, left:0, height:'100%', width:'100%'} };
+
+        var chart = new google.visualization.PieChart(document.getElementById('people-chart'));
+        chart.draw(data, options);
+      }
+    </script>
+  </head>
+  <body>
+    <header>
+      <h1>Audible Harvest</h1>
+    </header>
+
+    <div id="sidebar">
+      <h3>Social Networks</h3>
+      <div id="network-chart"></div>
+
+      <h3>Music Services</h3>
+      <div id="service-chart"></div>
+
+      <h3>People</h3>
+      <div id="people-chart"></div>
+    </div>
+
+    <div id="main">
+      <h3>Music</h3>
+      <table id="music">
+        <% Treasure.all.each do |t| %>
+          <tr>
+            <td>play button</td>
+            <td><%= t.track %></td>
+            <td><%= t.artist %></td>
+            <td><%= t.person %></td>
+            <td><%= t.origin %></td>
+            <td><%= t.provider %></td>
+          </tr>
+        <% end %>
+      </table>
+    </div>
+
 
   </body>
 </html>
