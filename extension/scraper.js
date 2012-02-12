@@ -58,9 +58,25 @@ CRATER.twitterStreamScanner = function() {
     if (id <= CRATER.twitterFeedMaxId) { return; }
 
     CRATER.log('New Feed Message: ' + jQuery('.js-tweet-text', ele).text() );
+    CRATER.twitterExtractUrls(ele);
   });
 
   CRATER.twitterFeedMaxId = set_max;
+}
+
+CRATER.twitterExtractUrls = function(ele) {
+  // look for 'a' tags within the .js-tweet-text element, and send them to the grinder.
+  var as = jQuery('.js-tweet-text a', ele);
+
+  // look for the person as .stream-item-header .username
+  var person = jQuery('.stream-item-header .username', ele).text()
+
+  jQuery.each( as, function( idx, aEle ) {
+    var url = jQuery(aEle).attr('data-expanded-url');
+    if (url != undefined) {
+      CRATER.recordGrind( person, url, 'Twitter' )
+    }
+  })
 }
 
 CRATER.facebookActivityStreamScanner = function() {
@@ -112,15 +128,21 @@ CRATER.facebookExtractTrack = function(ele) {
   }
 
   if (jQuery.inArray( provider.toUpperCase(), CRATER.musicProviders ) > -1) {
-    CRATER.recordHit( name, track, artist, provider, 'Facebook' )
+    CRATER.recordSnarf( name, track, artist, provider, 'Facebook' )
   }
 
 }
 
-CRATER.recordHit = function( person, track, artist, provider, origin ) {
+CRATER.recordSnarf = function( person, track, artist, provider, origin ) {
   CRATER.log("FOUND - Person:" + person + " Track:" + track + " Artist:" + artist + " Provider:" + provider );
   var url = CRATER.server + "/snarf" 
   jQuery.post( url, { 'person' : person, 'track' : track, 'artist' : artist, 'provider' : provider, 'origin' : origin } );
+}
+
+CRATER.recordGrind = function( person, url, origin ) {
+  CRATER.log("FOUND - Person:" + person + " URL:" + url + " Origin:" + origin );
+  var url = CRATER.server + "/grind" 
+  jQuery.post( url, { 'person' : person, 'url' : url, 'origin' : origin } );
 }
 
 CRATER.init();

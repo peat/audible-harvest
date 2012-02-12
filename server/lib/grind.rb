@@ -11,6 +11,7 @@ class MHDApp
 
     url = URI.parse( params['url'] )
     person = params['person']
+    origin = params['origin']
 
     # follow through all redirects!
     url = follow_redirects( url )
@@ -26,7 +27,7 @@ class MHDApp
           :track => data['title'],
           :artist => data['user']['username'],
           :provider => 'Soundcloud',
-          :origin => params['origin']
+          :origin => origin
         }
         Treasure.create( out )
       else
