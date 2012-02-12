@@ -63,7 +63,7 @@ AH.halt = function() {
 
 AH.notification = function() {
   // drop a div a the top of the page with a friendly message.
-  jQuery('body').prepend('<div id="audibleHarvest" style="position:absolute; top:0px; z-index:9999; font-size: 10px; padding: 3px;"><a href="' + AH.server + '" target="audibleHarvest">Audible Harvest</a> is Looking for Music <span id="audibleHarvestStatus"></span></div>');
+  jQuery('body').prepend('<div id="audibleHarvest" style="position:absolute; top:0px; z-index:9999; font-size: 10px; padding: 3px;">&nbsp;<a href="' + AH.server + '" target="audibleHarvest">Audible Harvest</a> is Looking for Music <span id="audibleHarvestStatus"></span>&nbsp;</div>');
   jQuery('#audibleHarvest').show();
 }
 
