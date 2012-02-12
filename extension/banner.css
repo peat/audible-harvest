@@ -1,6 +1,10 @@
 #audibleHarvest {
-  background-color: #FCF7D1;
-  border-bottom: 1px solid #B52C00;
+  background-color: #DDCC00;
+  border: 1px solid #000000;
+  color: #000;
   box-shadow: 0px 0px 10px #888;
   text-align:center;
 }
+
+#audibleHarvest a { text-decoration: none; font-weight: bold; color: inherit }
+#audibleHarvest a:hover { text-decoration: underline }

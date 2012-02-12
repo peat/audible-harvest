@@ -1,11 +1,3 @@
-/*
-
- TODO: pull links from Facebook activity streams
- TODO: pull links from Tweets
-
- */
-
-
 AH = {
   'musicProviders' : [ 'SPOTIFY', 'TURNTABLE', 'RHAPSODY', 'RDIO', 'MOG' ],
   'scannerInterval' : null,
@@ -22,13 +14,18 @@ AH.log = function(m) {
 
 AH.processQueue = function() {
   if (AH.queue.length > 0) {
+
+    // notifications
     AH.log("Queue Depth: " + AH.queue.length);
+    jQuery("#audibleHarvestStatus").text(" (" + AH.queue.length + " Updates) ");
+
     var msg = AH.queue.shift() // off the front; opposite of pop()    
     jQuery.post( msg.url, msg.request, function(data) {
       setTimeout("AH.processQueue()", 100); // try running again  
     });
   } else {
     setTimeout("AH.processQueue()", 10000); // check in 10 seconds
+    jQuery("#audibleHarvestStatus").text("");
   }
 }
 
@@ -66,7 +63,7 @@ AH.halt = function() {
 
 AH.notification = function() {
   // drop a div a the top of the page with a friendly message.
-  jQuery('body').prepend('<div id="audibleHarvest" style="position:absolute; top:0px; z-index:9999; font-size: 10px; padding: 3px;">Audible Harvest is Watching This Page</div>');
+  jQuery('body').prepend('<div id="audibleHarvest" style="position:absolute; top:0px; z-index:9999; font-size: 10px; padding: 3px;"><a href="' + AH.server + '" target="audibleHarvest">Audible Harvest</a> is Looking for Music <span id="audibleHarvestStatus"></span></div>');
   jQuery('#audibleHarvest').show();
 }
 
