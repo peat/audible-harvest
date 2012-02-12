@@ -118,7 +118,7 @@
     </div>
 
     <div id="main">
-      <h3>24 Hours of Music</h3>
+      <h3>Peat's 24 Hours of Music</h3>
       <table id="music">
         <% Treasure.order("created_at desc").each do |t| %>
           <tr class="track" id="t-<%= t.id %>" data-search="<%= "#{t.track} #{t.artist}" %>">
