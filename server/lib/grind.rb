@@ -41,10 +41,12 @@ class MHDApp
     found = false 
     until found 
       puts "Following #{url.to_s}"
+      original_url = url
       host, port = url.host, url.port if url.host && url.port 
       req = Net::HTTP::Get.new(url.path) 
       res = Net::HTTP.start(host, port) {|http|  http.request(req) } 
       res.header['location'] ? url = URI.parse(res.header['location']) : found = true 
+      return url if (original_url == url) # prevent hot loop
     end 
 
     url
