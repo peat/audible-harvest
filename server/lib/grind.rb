@@ -33,7 +33,7 @@ class MHDApp
           t
         end
       }
-    raise => e
+    rescue => e
       puts e
     end
 
