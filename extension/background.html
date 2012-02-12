@@ -1,0 +1,10 @@
+<html>
+  <head>
+    <script>
+    chrome.browserAction.onClicked.addListener(function(tab) {
+      chrome.tabs.executeScript( null, {file:"jquery.min.js"});
+      chrome.tabs.executeScript( null, {file:"scraper.js"});
+    });
+    </script>
+  </head>
+</html>

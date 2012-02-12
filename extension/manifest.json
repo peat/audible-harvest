@@ -1,0 +1,17 @@
+{
+  "name": "Crater",
+  "version": "1.0",
+  "description": "Find yer music, arr.",
+
+  "background_page" : "background.html",
+
+  "browser_action": {
+    "default_icon": "icon.png"
+  },
+
+  "permissions": [
+    "tabs",
+    "http://*/*",
+    "https://*/*"
+  ]
+}
