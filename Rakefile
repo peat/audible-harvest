@@ -15,6 +15,11 @@ namespace :server do
     Treasure.where( :origin => 'TEST' ).destroy_all
   end
 
+  desc "Deletes a treasure ID from the db."
+  task :delete => :environment do
+    Treasure.find(ENV['ID']).destroy
+  end
+
   task :environment do
     db = URI.parse(ENV['DATABASE_URL'] || 'postgres://localhost/mydb')
 

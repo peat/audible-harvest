@@ -121,7 +121,7 @@
       <h3>24 Hours of Music</h3>
       <table id="music">
         <% Treasure.order("created_at desc").each do |t| %>
-          <tr class="track" data-search="<%= "#{t.track} #{t.artist}" %>">
+          <tr class="track" id="t-<%= t.id %>" data-search="<%= "#{t.track} #{t.artist}" %>">
             <td><%= 
               if t.track.length > 20
                 "#{t.track.slice(0,20)}..." 
