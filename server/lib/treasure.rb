@@ -1,11 +1,13 @@
 class Treasure < ActiveRecord::Base
 
   def first_track?
-    Treasure.where('artist=? AND track=?', artist, track).order('id').first == self
+    tracks = Treasure.where('artist=? AND track=?', artist, track).order('id')
+    (tracks.count > 1 and tracks.first == self)
   end
 
   def first_artist?
-    Treasure.where('artist=?', artist).order('id').first == self
+    tracks = Treasure.where('artist=?', artist).order('id')
+    (tracks.count > 1 and tracks.first == self)
   end
 
   def self.provider_data
