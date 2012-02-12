@@ -6,3 +6,4 @@ gem 'activerecord', "~> 3.0.9"
 gem 'pg'
 gem 'json'
 gem 'nokogiri'
+gem 'rdio'
