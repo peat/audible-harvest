@@ -5,7 +5,7 @@ namespace :server do
 
   desc "Migrate the database through scripts in server/migrate. Target specific version with VERSION=x"
   task :migrate => :environment do
-    ActiveRecord::Migrator.migrate('server/migrate', ENV["VERSION"] ? ENV["VERSION"].to_i : nil )
+    ActiveRecord::Migrator.migrate('server/migrations', ENV["VERSION"] ? ENV["VERSION"].to_i : nil )
   end
 
   task :environment do
