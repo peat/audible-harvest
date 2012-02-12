@@ -10,14 +10,14 @@
         <li><label for="origin">Origin</label> TEST <input type="hidden" name="origin" value="TEST" /></li>
         <li><input type="submit"/></li>
       </ul>
-
-      <h3>treasure history, arr:</h3>
-      <ul>
-        <% Treasure.all.each do |t| %>
-          <li><%= t.pretty_print %></li>
-        <% end %>
-      </ul>
-
     </form>
+
+    <h3>treasure history, arr:</h3>
+    <ul>
+      <% Treasure.all.each do |t| %>
+        <li><%= t.pretty_print %></li>
+      <% end %>
+    </ul>
+
   </body>
 </html>
