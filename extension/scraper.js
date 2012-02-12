@@ -7,7 +7,7 @@
 
 
 CRATER = {
-  'musicProviders' : [ 'SPOTIFY', 'TURNTABLE', 'RHAPSODY' ],
+  'musicProviders' : [ 'SPOTIFY', 'TURNTABLE', 'RHAPSODY', 'RDIO' ],
   'scannerInterval' : null,
   'facebookActivityFeedTimestamp' : 0,
   'twitterFeedMaxId' : 0,
@@ -118,7 +118,7 @@ CRATER.facebookExtractTrack = function(ele) {
 }
 
 CRATER.recordHit = function( person, track, artist, provider, origin ) {
-  CRATER.log("FOUND - User:" + user + " Track:" + track + " Artist:" + artist + " Provider:" + provider );
+  CRATER.log("FOUND - Person:" + person + " Track:" + track + " Artist:" + artist + " Provider:" + provider );
   var url = CRATER.server + "/snarf" 
   jQuery.post( url, { 'person' : person, 'track' : track, 'artist' : artist, 'provider' : provider, 'origin' : origin } );
 }
