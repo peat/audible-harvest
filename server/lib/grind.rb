@@ -31,6 +31,18 @@ class MHDApp
           :origin => origin
         }
         Treasure.create( out )
+
+      when /open\.spotify\.com/
+        data = spotify_data( url )
+        out = {
+          :person => person,
+          :track => data[:track],
+          :artist => data[:artist],
+          :provider => 'Spotify',
+          :origin => origin
+        }
+        Treasure.create( out )
+
       else
         # last resort: check to see if it's a tumblr blog
         tumblr_set = tumblr_data( url.to_s )
@@ -112,6 +124,22 @@ class MHDApp
     end
 
     results
+  end
+
+  def spotify_data( url )
+    # change 'http://open.spotify.com/album/43uj7422MLR9MRBXSki0El' into 'spotify:album:43uj7422MLR9MRBXSki0El'
+    path_fragments = url.path.split('/').join(":")
+    spotify_uri = "spotify#{path_fragments}"
+
+    # use spotify lookup for rich XML info
+    lookup_url = "http://ws.spotify.com/lookup/1/?uri=#{spotify_uri}&extras=track"
+    doc = Nokogiri::XML(open(lookup_url))
+
+    # use the first track, artist it finds
+    track = doc.css('track>name').first.text.strip
+    artist = doc.css('track>artist').first.text.strip
+
+    { :track => track, :artist => artist}
   end
 
 end
