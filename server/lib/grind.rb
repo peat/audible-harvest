@@ -136,9 +136,18 @@ class MHDApp
 
   def grind_rdio( url )
     begin
-      rdio = Rdio.init(['z4u8vr27cgrcs8npstxa3qx6','z3HjqpX8Pt'])
-      rdio_object = rdio.call('getObjectFromUrl', {'url' => url.to_s})
-      puts rdio_object.inspect
+      rdio = Rdio.init('z4u8vr27cgrcs8npstxa3qx6','z3HjqpX8Pt')
+      rdio_json = JSON.parse( rdio.call('getObjectFromUrl', {'url' => url.to_s, 'extras' => 'tracks'}) )
+
+      first_track = rdio_json['result']['tracks'].first
+
+      treasure = {
+        :track => first_track['name'],
+        :artist => first_track['albumArtist'],
+        :provider => 'Rdio'
+      }
+
+      return [treasure]
     rescue => e
       puts e
     end
