@@ -5,6 +5,7 @@ require 'net/http'
 require 'nokogiri'
 require 'open-uri'
 require 'timeout'
+require 'rdio'
 
 class MHDApp < Sinatra::Application
 

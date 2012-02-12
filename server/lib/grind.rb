@@ -52,6 +52,8 @@ class MHDApp
         out = grind_spotify( url )
       when /tumblr\.com/
         out = grind_tumblr( url )
+      when /rdio\.com/
+        out = grind_rdio( url )
     end
 
     # drop out if we have data
@@ -125,6 +127,18 @@ class MHDApp
         :provider => 'Tumblr'
       }
       return [treasure]
+    rescue => e
+      puts e
+    end
+
+    return []
+  end
+
+  def grind_rdio( url )
+    begin
+      rdio = Rdio.new(['z4u8vr27cgrcs8npstxa3qx6','z3HjqpX8Pt'])
+      rdio_object = rdio.call('getObjectFromUrl', {'url' => url.to_s})
+      puts rdio_object.inspect
     rescue => e
       puts e
     end
