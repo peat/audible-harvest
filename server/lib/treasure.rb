@@ -8,7 +8,7 @@ class Treasure < ActiveRecord::Base
       providers[t.provider] += 1
     end
 
-    providers.keys.collect { |k| [k, providers[k]] }.to_json
+    providers.keys.collect { |k| [k, providers[k]] }.sort { |a,b| b[1] <=> a[1] }.to_json
   end
 
   def self.origin_data
@@ -19,7 +19,7 @@ class Treasure < ActiveRecord::Base
       origins[t.origin] += 1
     end
 
-    origins.keys.collect { |k| [k, origins[k]] }.to_json
+    origins.keys.collect { |k| [k, origins[k]] }.sort { |a,b| b[1] <=> a[1] }.to_json
   end
 
 end
