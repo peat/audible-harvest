@@ -89,7 +89,12 @@ class MHDApp
       spotify_uri = "spotify#{path_fragments}"
 
       # use spotify lookup for rich XML info; be sure to include track info
-      lookup_url = "http://ws.spotify.com/lookup/1/?uri=#{spotify_uri}&extras=track"
+      case spotify_uri
+        when /track/
+          lookup_url = "http://ws.spotify.com/lookup/1/?uri=#{spotify_uri}"
+        else
+          lookup_url = "http://ws.spotify.com/lookup/1/?uri=#{spotify_uri}&extras=track"
+      end
       doc = Nokogiri::XML(open(lookup_url))
 
       # use only the first track and artist it finds
