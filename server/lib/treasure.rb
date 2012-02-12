@@ -1,7 +1,7 @@
 class Treasure < ActiveRecord::Base
 
   def first_track?
-    (Treasure.where('title=? AND artist=? AND min(id)=?', title, artist, id ).count > 1 )
+    (Treasure.where('track=? AND artist=? AND min(id)=?', track, artist, id ).count > 1 )
   end
 
   def first_artist?
