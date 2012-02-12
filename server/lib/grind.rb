@@ -55,17 +55,22 @@ class MHDApp
 
 
   def grind_soundcloud( url )
-    raw_follow = "http://api.soundcloud.com/resolve.json?client_id=#{SOUNDCLOUD_CLIENT_ID}&url=#{URI.escape(url.to_s)}"
-    follow = URI.parse( raw_follow )
-    data = JSON.parse( open( follow.to_s ).read )
+    begin
+      raw_follow = "http://api.soundcloud.com/resolve.json?client_id=#{SOUNDCLOUD_CLIENT_ID}&url=#{URI.escape(url.to_s)}"
+      follow = URI.parse( raw_follow )
+      data = JSON.parse( open( follow.to_s ).read )
+      treasure = {
+        :track => data['title'],
+        :artist => data['user']['username'],
+        :provider => 'Soundcloud',
+      }
 
-    treasure = {
-      :track => data['title'],
-      :artist => data['user']['username'],
-      :provider => 'Soundcloud',
-    }
+      [treasure]
+    rescue =>e
+      puts e
+    end
 
-    [treasure]
+    []
   end
 
   def grind_spotify( url )
