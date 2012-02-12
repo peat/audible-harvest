@@ -11,7 +11,7 @@ CRATER = {
   'scannerInterval' : null,
   'facebookActivityFeedTimestamp' : 0,
   'twitterFeedMaxId' : 0,
-  'server' : 'http://falling-ice-2711.heroku.com/'
+  'server' : 'http://falling-ice-2711.heroku.com'
 }
 
 CRATER.log = function(m) {
@@ -141,8 +141,8 @@ CRATER.recordSnarf = function( person, track, artist, provider, origin ) {
 
 CRATER.recordGrind = function( person, url, origin ) {
   CRATER.log("FOUND - Person:" + person + " URL:" + url + " Origin:" + origin );
-  var url = CRATER.server + "/grind" 
-  jQuery.post( url, { 'person' : person, 'url' : url, 'origin' : origin } );
+  var grind_url = CRATER.server + "/grind" 
+  jQuery.post( grind_url, { 'person' : person, 'url' : url, 'origin' : origin } );
 }
 
 CRATER.init();
