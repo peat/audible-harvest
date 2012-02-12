@@ -1,3 +1,5 @@
 class Treasure < ActiveRecord::Base
-  # derp
+  def pretty_print
+    [ id, created_at, person, track, artist, provider, origin ].join(" :: ")
+  end
 end

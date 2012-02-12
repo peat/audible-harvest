@@ -14,7 +14,7 @@
       <h3>treasure history, arr:</h3>
       <ul>
         <% Treasure.all.each do |t| %>
-          <li><%= t.inspect %></li>
+          <li><%= t.pretty_print %></li>
         <% end %>
       </ul>
 
