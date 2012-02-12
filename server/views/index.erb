@@ -5,5 +5,13 @@
       <li><a href="/snarf.html">Snarf</a></li>
       <li><a href="/grind.html">Grind</a></li>
     </ul>
+
+    <h3>Hits:</h3>
+    <ul>
+      <% Treasure.all.each do |t| %>
+        <li><%= t.pretty_print %></li>
+      <% end %>
+    </ul>
+
   </body>
 </html>

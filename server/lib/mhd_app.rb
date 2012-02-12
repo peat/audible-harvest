@@ -2,6 +2,8 @@ require 'active_record'
 require 'uri'
 require 'json'
 require 'net/http'
+require 'nokogiri'
+require 'open-uri'
 
 class MHDApp < Sinatra::Application
 
