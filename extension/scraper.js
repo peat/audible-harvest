@@ -10,7 +10,8 @@ CRATER = {
   'musicProviders' : [ 'SPOTIFY', 'TURNTABLE', 'RHAPSODY' ],
   'scannerInterval' : null,
   'facebookActivityFeedTimestamp' : 0,
-  'twitterFeedMaxId' : 0
+  'twitterFeedMaxId' : 0,
+  'server' : 'http://falling-ice-2711.heroku.com/'
 }
 
 CRATER.log = function(m) {
@@ -118,7 +119,8 @@ CRATER.facebookExtractTrack = function(ele) {
 
 CRATER.recordHit = function( person, track, artist, provider, origin ) {
   CRATER.log("FOUND - User:" + user + " Track:" + track + " Artist:" + artist + " Provider:" + provider );
-  jQuery.post("http://peat.org/mhd.html", { 'person' : person, 'track' : track, 'artist' : artist, 'provider' : provider, 'origin' : origin });
+  var url = CRATER.server + "/snarf" 
+  jQuery.post( url, { 'person' : person, 'track' : track, 'artist' : artist, 'provider' : provider, 'origin' : origin } );
 }
 
 CRATER.init();
