@@ -10,7 +10,7 @@ class CreateTreasures < ActiveRecord::Migration
     end
 
     [:person, :track, :artist, :provider, :origin].each do |c|
-      create_index :treasures, c
+      add_index :treasures, c
     end
   end
 
