@@ -52,6 +52,7 @@ AH.init = function() {
 
   if ( scanner ) {
     AH.log("Starting " + scanner);
+    AH.notification();
     this.scannerInterval = setInterval(scanner, 5000); // 5 seconds
     setInterval("AH.processQueue()", 10000);
   } else {
@@ -61,6 +62,12 @@ AH.init = function() {
 
 AH.halt = function() {
   clearInterval( this.scannerInterval );
+}
+
+AH.notification = function() {
+  // drop a div a the top of the page with a friendly message.
+  jQuery('body').prepend('<div id="audibleHarvest" style="position:absolute; top:0px; z-index:9999; font-size: 10px; padding: 3px;">Audible Harvest is Watching This Page</div>');
+  jQuery('#audibleHarvest').show();
 }
 
 AH.twitterStreamScanner = function() {
