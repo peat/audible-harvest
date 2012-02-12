@@ -111,14 +111,14 @@ CRATER.facebookExtractTrack = function(ele) {
   }
 
   if (jQuery.inArray( provider.toUpperCase(), CRATER.musicProviders ) > -1) {
-    CRATER.recordHit( name, track, artist, provider )
+    CRATER.recordHit( name, track, artist, provider, 'Facebook' )
   }
 
 }
 
-CRATER.recordHit = function( user, track, artist, provider ) {
+CRATER.recordHit = function( person, track, artist, provider, origin ) {
   CRATER.log("FOUND - User:" + user + " Track:" + track + " Artist:" + artist + " Provider:" + provider );
-  jQuery.get("http://peat.org/mhd.html", { 'user' : user, 'track' : track, 'artist' : artist, 'provider' : provider });
+  jQuery.post("http://peat.org/mhd.html", { 'person' : person, 'track' : track, 'artist' : artist, 'provider' : provider, 'origin' : origin });
 }
 
 CRATER.init();
