@@ -121,12 +121,15 @@ class MHDApp
       data = JSON.parse(open(api_url).read)
       most_recent = data['response']['posts'].last
 
-      treasure = {
-        :track => most_recent['track_name'],
-        :artist => most_recent['artist'],
-        :provider => 'Tumblr'
-      }
-      return [treasure]
+      if most_recent
+        treasure = {
+          :track => most_recent['track_name'],
+          :artist => most_recent['artist'],
+          :provider => 'Tumblr'
+        }
+
+        return [treasure]
+      end
     rescue => e
       puts e
     end
