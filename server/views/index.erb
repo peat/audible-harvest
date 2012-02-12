@@ -33,7 +33,7 @@
         padding: 0;
       }
 
-      #music tr { border-bottom: 1px solid #444; }
+      #music tr { border-bottom: 1px solid #a86; }
     </style>
 
 
@@ -116,7 +116,7 @@
       <table id="music">
         <% Treasure.all.each do |t| %>
           <tr>
-            <td>play button</td>
+            <td><img src="/images/play.jpg" style="height:25px; width:25px;"></td>
             <td><%= t.track.slice(0,20) %></td>
             <td><%= t.artist %></td>
             <td><%= t.person %></td>
