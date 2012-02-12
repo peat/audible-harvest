@@ -1,6 +1,8 @@
 require 'active_record'
 require 'uri'
 
+require 'server/lib/treasure'
+
 namespace :server do
 
   desc "Migrate the database through scripts in server/migrate. Target specific version with VERSION=x"
