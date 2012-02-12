@@ -135,4 +135,34 @@ class MHDApp
     out
   end
 
+  def follow_redirects( url )
+
+    begin
+      found = false 
+      until found 
+        puts "Following #{url.to_s}"
+        original_url = url
+        host, port = url.host, url.port if url.host && url.port 
+        req = Net::HTTP::Get.new(url.path) 
+        res = Net::HTTP.start(host, port) {|http|  http.request(req) } 
+        if res.header['location']
+          unless res.header['location'] =~ /^http/ # ensure it's an absolute url
+            url = URI.parse("http://#{url.host}:#{url.port}#{res.header['location']}")
+          else
+            url = URI.parse(res.header['location']) 
+          end
+        else
+          return url
+        end
+
+        return url if (original_url == url) # prevent hot loop
+      end 
+    rescue => e
+      puts e
+    end
+
+    url
+  end
+  
+
 end
