@@ -121,7 +121,7 @@ class MHDApp
       data = JSON.parse(open(api_url).read)
 
       puts "TUMBLR DATA"
-      puts JSON.generate_pretty( data )
+      puts JSON.pretty_generate( data )
 
       most_recent = data['response']['posts'].last
 
