@@ -1,6 +1,7 @@
 <html>
   <body>
     <form action="/snarf" method="post">
+      <h3>register some treasure, arr:</h3>
       <ul>
         <li><label for="person">Person</label> <input name="person" /></li>
         <li><label for="track">Track</label> <input name="track" /></li>
@@ -8,6 +9,15 @@
         <li><label for="provider">Provider</label> <input name="provider" /></li>
         <li><label for="origin">Origin</label> <input name="origin" /></li>
         <li><input type="submit"/></li>
+      </ul>
+
+      <h3>treasure history, arr:</h3>
+      <ul>
+        <% Treasure.all.each do |t| %>
+          <li><%= t.inspect %></li>
+        <% end %>
+      </ul>
+
     </form>
   </body>
 </html>
