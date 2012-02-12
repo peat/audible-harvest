@@ -10,6 +10,7 @@ Yo, this is in serious development right now. Music Hack Day ends on the evening
 
 - `extension/` contains a Chrome extension for monitoring Facebook and Twitter streams.
 - `server/` contains a Sinatra server for spidering links and aggregating stats.
+- `irc/` contains a bot for monitoring an IRC channel.
 
 ## Usage
 
