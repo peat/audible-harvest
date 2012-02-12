@@ -13,25 +13,29 @@ class MHDApp
     out = { :error => "Timeout exceeded processing #{url}" }
 
     # 5 second limit!
-    Timeout::timeout(5) {
-      url = URI.parse( params['url'] )
-      person = params['person']
-      origin = params['origin']
+    begin
+      Timeout::timeout(5) {
+        url = URI.parse( params['url'] )
+        person = params['person']
+        origin = params['origin']
 
-      # follow through all redirects!
-      url = follow_redirects( url )
+        # follow through all redirects!
+        url = follow_redirects( url )
 
-      out = treasure_for( url )
+        out = treasure_for( url )
 
-      out = out.collect do |t|
-        # add in person, origin, and save it
-        t[:person] = person
-        t[:origin] = origin
-        Treasure.create(t)
+        out = out.collect do |t|
+          # add in person, origin, and save it
+          t[:person] = person
+          t[:origin] = origin
+          Treasure.create(t)
 
-        t
-      end
-    }
+          t
+        end
+      }
+    raise => e
+      puts e
+    end
 
     out.to_json
   end
