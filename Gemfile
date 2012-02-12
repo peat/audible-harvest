@@ -2,6 +2,6 @@ source 'http://rubygems.org/'
 
 gem 'sinatra'
 gem 'unicorn'
-gem 'activerecord'
+gem 'activerecord', "~> 3.0.9"
 gem 'pg'
 gem 'json'
