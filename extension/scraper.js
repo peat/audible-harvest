@@ -26,6 +26,7 @@ AH.processQueue = function() {
     var msg = AH.queue.shift() // off the front; opposite of pop()    
     jQuery.post( msg.url, msg.request, function(data) {
       setTimeout("AH.processQueue()", 100); // try running again  
+      AH.log("Response: " + data);
     });
   } else {
     setTimeout("AH.processQueue()", 10000); // check in 10 seconds
