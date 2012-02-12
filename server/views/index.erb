@@ -113,6 +113,8 @@
         var download_url = data.download_url
         if ( download_url ) {
           var full_url = download_url + "?client_id=" + client_id;
+          console.log("Playing: " + full_url);
+          $('#player audio').attr('src', full_url);
         }
       }
 
