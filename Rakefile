@@ -1,14 +1,14 @@
 require 'active_record'
 require 'uri'
 
-task :default => :migrate
+namespace :server do
 
-desc "Migrate the database through scripts in db/migrate. Target specific version with VERSION=x"
-task :migrate => :environment do
-  ActiveRecord::Migrator.migrate('migrate', ENV["VERSION"] ? ENV["VERSION"].to_i : nil )
-end
+  desc "Migrate the database through scripts in server/migrate. Target specific version with VERSION=x"
+  task :migrate => :environment do
+    ActiveRecord::Migrator.migrate('server/migrate', ENV["VERSION"] ? ENV["VERSION"].to_i : nil )
+  end
 
-task :environment do
+  task :environment do
     db = URI.parse(ENV['DATABASE_URL'] || 'postgres://localhost/mydb')
 
     ActiveRecord::Base.establish_connection(
@@ -19,4 +19,6 @@ task :environment do
       :database => db.path[1..-1],
       :encoding => 'utf8'
     )
+  end
+
 end
