@@ -56,10 +56,10 @@
 
       function drawNetworkChart() {
         var data = new google.visualization.DataTable();
+        data.addRows(<%= Treasure.origin_data %>);
 
         data.addColumn('string', 'Network');
         data.addColumn('number', 'Tracks');
-        data.addRows(<%= Treasure.provider_data %>);
 
         var options = { width: 350, height: 200, is3D: true, chartArea: {top:0, left:0, height:'100%', width:'100%'} };
 
@@ -71,12 +71,7 @@
         var data = new google.visualization.DataTable();
         data.addColumn('string', 'Provider');
         data.addColumn('number', 'Tracks');
-        data.addRows([
-          ['Soundcloud',   8],
-          ['Spotify', 7],
-          ['Rdio',    6],
-          ['Tumblr',  5]
-        ]);
+        data.addRows(<%= Treasure.provider_data %>);
 
         var options = { width: 350, height: 200, is3D: true, chartArea: {top:0, left:0, height:'100%', width:'100%'} };
 

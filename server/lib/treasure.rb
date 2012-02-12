@@ -3,12 +3,23 @@ class Treasure < ActiveRecord::Base
   def self.provider_data
     providers = {}
 
-    self.all.each do |p|
-      providers[p] ||= 0
-      providers[p] += 1
+    self.all.each do |t|
+      providers[t.provider] ||= 0
+      providers[t.provider] += 1
     end
 
     providers.keys.collect { |k| [k, providers[k]] }.to_json
+  end
+
+  def self.origin_data
+    origins = {}
+
+    self.all.each do |t|
+      origins[t.origin] ||= 0
+      origins[t.origin] += 1
+    end
+
+    origins.keys.collect { |k| [k, origins[k]] }.to_json
   end
 
 end
