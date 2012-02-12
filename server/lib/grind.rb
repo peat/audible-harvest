@@ -136,7 +136,7 @@ class MHDApp
 
   def grind_rdio( url )
     begin
-      rdio = Rdio.new(['z4u8vr27cgrcs8npstxa3qx6','z3HjqpX8Pt'])
+      rdio = Rdio.init(['z4u8vr27cgrcs8npstxa3qx6','z3HjqpX8Pt'])
       rdio_object = rdio.call('getObjectFromUrl', {'url' => url.to_s})
       puts rdio_object.inspect
     rescue => e
