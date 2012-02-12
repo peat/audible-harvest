@@ -17,129 +17,122 @@ class MHDApp
     # follow through all redirects!
     url = follow_redirects( url )
 
-    out = {}
+    out = treasure_for( url )
 
-    # figure out where the URL points. 
-    case url.host
-      when /soundcloud\.com/
-        data = soundcloud_data( url.to_s )
-        out = {
-          :person => person,
-          :track => data['title'],
-          :artist => data['user']['username'],
-          :provider => 'Soundcloud',
-          :origin => origin
-        }
-        Treasure.create( out )
+    out = out.collect do |t|
+      # add in person, origin, and save it
+      t[:person] = person
+      t[:origin] = origin
+      # Target.create(t)
 
-      when /open\.spotify\.com/
-        data = spotify_data( url )
-        out = {
-          :person => person,
-          :track => data[:track],
-          :artist => data[:artist],
-          :provider => 'Spotify',
-          :origin => origin
-        }
-        Treasure.create( out )
-
-      else
-        # last resort: check to see if it's a tumblr blog
-        tumblr_set = tumblr_data( url.to_s )
-        if (tumblr_set.length > 0)
-          # woot woot
-          tumblr_set.each do |t|
-            p = t['response']['posts'].first
-            out = {
-              :person => person,
-              :track => p['track_name'],
-              :artist => p['artist'],
-              :provider => 'Tumblr',
-              :origin => origin
-            }
-            Treasure.create( out )
-          end
-        end
+      t
     end
 
     out.to_json
   end
 
-  def follow_redirects( url )
 
-    begin
-      found = false 
-      until found 
-        puts "Following #{url.to_s}"
-        original_url = url
-        host, port = url.host, url.port if url.host && url.port 
-        req = Net::HTTP::Get.new(url.path) 
-        res = Net::HTTP.start(host, port) {|http|  http.request(req) } 
-        if res.header['location']
-          unless res.header['location'] =~ /^http/ # ensure it's an absolute url
-            url = URI.parse("http://#{url.host}:#{url.port}#{res.header['location']}")
-          else
-            url = URI.parse(res.header['location']) 
-          end
-        else
-          return url
-        end
+  def treasure_for( url )
+    out = []
 
-        return url if (original_url == url) # prevent hot loop
-      end 
-    rescue => e
-      puts e
+    # first shot: work on direct URLs.
+    case url.host
+      when /soundcloud\.com/
+        out = grind_soundcloud( url )
+      when /open\.spotify\.com/
+        out = grind_spotify( url )
+      when /tumblr\.com/
+        out = grind_tumblr( url )
     end
 
-    url
+    # drop out if we have data
+    return out unless out.empty?
+
+    # second shot: grind on content
+    content = Nokogiri::HTML(open(url.to_s))
+    grind_content( url )
   end
 
-  # web_url is a string like: http://soundcloud.com/skrillex/nero-promises-skrillex
-  # returns a JSON object
-  def soundcloud_data( web_url )
-    raw_follow = "http://api.soundcloud.com/resolve.json?client_id=#{SOUNDCLOUD_CLIENT_ID}&url=#{URI.escape(web_url)}"
+
+  def grind_soundcloud( url )
+    raw_follow = "http://api.soundcloud.com/resolve.json?client_id=#{SOUNDCLOUD_CLIENT_ID}&url=#{URI.escape(url.to_s)}"
     follow = URI.parse( raw_follow )
-    JSON.parse( open( follow.to_s ).read )
+    data = JSON.parse( open( follow.to_s ).read )
+
+    treasure = {
+      :track => data['title'],
+      :artist => data['user']['username'],
+      :provider => 'Soundcloud',
+    }
+
+    [treasure]
   end
 
-  def tumblr_data( web_url )
-    results = []
-
-    begin
-      doc = Nokogiri::HTML(open(web_url))
-      uri = URI.parse(web_url)
-
-      tumblr_api_url = "http://api.tumblr.com/v2/blog/#{uri.host}/posts?api_key=#{TUMBLR_API_KEY}&id="
-
-      # find class="post audio"
-      doc.css("div.audio").each do |audio_div|
-        # get the id, from the string "post-idstring"
-        raw_id = audio_div.attribute("id").value()
-        id = raw_id.split('-').last
-        request_url = tumblr_api_url + id
-        results << JSON.parse( open(request_url).read )
-      end
-    rescue => e
-      puts e
-    end
-
-    results
-  end
-
-  def spotify_data( url )
+  def grind_spotify( url )
     # change 'http://open.spotify.com/album/43uj7422MLR9MRBXSki0El' into 'spotify:album:43uj7422MLR9MRBXSki0El'
     path_fragments = url.path.split('/').join(":")
     spotify_uri = "spotify#{path_fragments}"
 
-    # use spotify lookup for rich XML info
+    # use spotify lookup for rich XML info; be sure to include track info
     lookup_url = "http://ws.spotify.com/lookup/1/?uri=#{spotify_uri}&extras=track"
     doc = Nokogiri::XML(open(lookup_url))
 
-    # use the first track, artist it finds
+    # use only the first track and artist it finds
     track = doc.css('track>name').first.text.strip
     artist = doc.css('track>artist').first.text.strip
 
-    { :track => track, :artist => artist}
+    treasure = {
+      :track => track,
+      :artist => artist,
+      :provider => 'Spotify'
+    }
+
+    [treasure]
+  end
+
+  def grind_tumblr( url )
+    begin
+      api_url = "http://api.tumblr.com/v2/blog/#{url.host}/posts/audio?api_key=#{TUMBLR_API_KEY}"
+      data = JSON.parse(open(api_url).read)
+      most_recent = data['response']['posts'].last
+
+      treasure = {
+        :track => most_recent['track_name'],
+        :artist => most_recent['artist'],
+        :provider => 'Tumblr'
+      }
+      return [treasure]
+    rescue => e
+      puts e
+    end
+
+    return []
+  end
+
+
+  def grind_content( url )
+    doc = Nokogiri::HTML(open(url.to_s))
+    out = []
+
+    # gather up the links ...
+    links = []
+    doc.css('a').each do |a|
+      links << a.attribute('href')
+    end
+
+    # find the first viable link to a service we recognize
+    links.each do |link|
+      case url.host
+        when /soundcloud\.com/
+          out = grind_soundcloud( url )
+        when /open\.spotify\.com/
+          out = grind_spotify( url )
+      end
+
+      return [out] unless out.empty?
+    end
+
+    out
   end
 
 end
