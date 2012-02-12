@@ -110,6 +110,7 @@
       var client_id = 'aba5e923e867c06bdda5e282e933341d';        
 
       function runPlayer( data ) {
+        console.log('RUN PLAYER');
         var download_url = data.download_url
         if ( download_url ) {
           var full_url = download_url + "?client_id=" + client_id;
