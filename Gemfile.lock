@@ -18,7 +18,7 @@ GEM
     json (1.6.5)
     kgio (2.7.2)
     multi_json (1.0.4)
-    mysql (2.8.1)
+    pg (0.12.2)
     rack (1.4.1)
     rack-protection (1.2.0)
       rack
@@ -40,6 +40,6 @@ PLATFORMS
 DEPENDENCIES
   activerecord
   json
-  mysql
+  pg
   sinatra
   unicorn
