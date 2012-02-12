@@ -122,7 +122,15 @@
             <td><%= t.artist %></td>
             <td><%= t.person %></td>
             <td><%= t.origin %></td>
-            <td><%= t.provider %></td>
+            <td><%= 
+            case t.provider 
+            when /rdio/i
+              '<img src="/images/rdio.jpg" style="height:20px;">'
+            else
+              t.provider
+            end
+            
+            %></td>
           </tr>
         <% end %>
       </table>
