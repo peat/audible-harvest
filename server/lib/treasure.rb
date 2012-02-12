@@ -26,8 +26,8 @@ class Treasure < ActiveRecord::Base
     people = {}
 
     self.all.each do |t|
-      people[t.people] ||= 0
-      people[t.people] += 1
+      people[t.person] ||= 0
+      people[t.person] += 1
     end
 
     # only return the top 5 ...
