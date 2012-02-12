@@ -52,7 +52,7 @@ AH.init = function() {
 
   if ( scanner ) {
     AH.log("Starting " + scanner);
-    this.scannerInterval = setInterval(scanner, 10000); // 10 seconds
+    this.scannerInterval = setInterval(scanner, 5000); // 5 seconds
     setInterval("AH.processQueue()", 10000);
   } else {
     this.log("Couldn't find a scanner for " + hostname);
