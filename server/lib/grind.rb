@@ -1,6 +1,7 @@
 class MHDApp
 
   SOUNDCLOUD_CLIENT_ID = 'aba5e923e867c06bdda5e282e933341d'
+  TUMBLR_API_KEY = 'sK6Kj5Ts49pAosgwiFDG8oYAgQpgsQFZ56PZy93pSlFZnpBl7o'
 
   get '/grind.html' do
     erb :'grind'
@@ -31,7 +32,22 @@ class MHDApp
         }
         Treasure.create( out )
       else
-        out = { :unknown => url.to_s }
+        # last resort: check to see if it's a tumblr blog
+        tumblr_set = tumblr_data( url.to_s )
+        if (tumblr_set.length > 0)
+          # woot woot
+          tumblr_set.each do |t|
+            p = t['response']['posts'].first
+            out = {
+              :person => person,
+              :track => p['track_name'],
+              :artist => p['artist'],
+              :provider => 'Tumblr',
+              :origin => origin
+            }
+            Treasure.create( out )
+          end
+        end
     end
 
     out.to_json
@@ -63,6 +79,30 @@ class MHDApp
     raw_follow = "http://api.soundcloud.com/resolve.json?client_id=#{SOUNDCLOUD_CLIENT_ID}&url=#{URI.escape(web_url)}"
     follow = URI.parse( raw_follow )
     JSON.parse( open( follow.to_s ).read )
+  end
+
+  def tumblr_data( web_url )
+    results = []
+
+    begin
+      doc = Nokogiri::HTML(open(web_url))
+      uri = URI.parse(web_url)
+
+      tumblr_api_url = "http://api.tumblr.com/v2/blog/#{uri.host}/posts?api_key=#{TUMBLR_API_KEY}&id="
+
+      # find class="post audio"
+      doc.css("div.audio").each do |audio_div|
+        # get the id, from the string "post-idstring"
+        raw_id = audio_div.attribute("id").value()
+        id = raw_id.split('-').last
+        request_url = tumblr_api_url + id
+        results << JSON.parse( open(request_url).read )
+      end
+    rescue => e
+      puts e
+    end
+
+    results
   end
 
 end
