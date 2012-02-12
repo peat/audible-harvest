@@ -76,7 +76,7 @@ class MHDApp
 
       [treasure]
     rescue =>e
-      puts e
+      puts "#{e}, follow: #{follow.to_s}, lookup_url: #{lookup_url}"
     end
 
     []
