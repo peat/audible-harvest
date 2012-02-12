@@ -1,7 +1,7 @@
 require 'active_record'
 require 'uri'
 
-require 'server/lib/treasure'
+require File.join( File.dirname(__FILE__), 'server', 'lib', 'treasure.rb' )
 
 namespace :server do
 
