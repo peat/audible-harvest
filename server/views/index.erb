@@ -117,18 +117,17 @@
       <table id="music">
         <% Treasure.all.each do |t| %>
           <tr>
-            <td><img src="/images/play.jpg" style="height:20px; width:20px;"></td>
             <td><%= 
-              if t.track.length > 0
+              if t.track.length > 20
                 "#{t.track.slice(0,20)}..." 
               else
                 t.track
               end
             %></td>
             <td><%= t.artist %></td>
-            <td><%= t.person %></td>
-            <td><%= t.origin %></td>
-            <td><%= 
+            <td style="text-align: center"><%= t.person %></td>
+            <td style="text-align: center"><%= t.origin %></td>
+            <td style="text-align: center"><%= 
             case t.provider 
             when /rdio/i
               '<img src="/images/rdio.jpg" style="height:20px;">'
