@@ -68,7 +68,6 @@
       google.load("visualization", "1", {packages:["corechart"]});
       google.setOnLoadCallback(drawNetworkChart);
       google.setOnLoadCallback(drawServiceChart);
-      google.setOnLoadCallback(drawPeopleChart);
 
       var chartOptions = { width: 350, height: 200, is3D: true, chartArea: {top:0, left:0, height:'100%', width:'100%'} };
 
@@ -91,16 +90,6 @@
         data.addRows(<%= Treasure.provider_data %>);
 
         var chart = new google.visualization.PieChart(document.getElementById('service-chart'));
-        chart.draw(data, chartOptions);
-      }
-
-      function drawPeopleChart() {
-        var data = new google.visualization.DataTable();
-        data.addColumn('string', 'Provider');
-        data.addColumn('number', 'Tracks');
-        data.addRows(<%= Treasure.people_data %>);
-
-        var chart = new google.visualization.PieChart(document.getElementById('people-chart'));
         chart.draw(data, chartOptions);
       }
     </script>
@@ -129,8 +118,20 @@
       <h3>Music Services</h3>
       <div id="service-chart"></div>
 
+      <h3>Artists</h3>
+      <ol>
+        <% Treasure.top_artists.each do |p, l| %>
+          <li><%= p %> (<%= l %>)</li>
+        <% end %>
+      </ol>
+
       <h3>People</h3>
-      <div id="people-chart"></div>
+      <ol>
+        <% Treasure.top_people.each do |p, l| %>
+          <li><%= p %> (<%= l %>)</li>
+        <% end %>
+      </ol>
+
     </div>
 
     <div id="main">

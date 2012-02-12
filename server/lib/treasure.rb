@@ -37,7 +37,7 @@ class Treasure < ActiveRecord::Base
     origins.keys.collect { |k| [k, origins[k]] }.sort { |a,b| b[1] <=> a[1] }.to_json
   end
 
-  def self.people_data
+  def self.top_people
     people = {}
 
     self.all.each do |t|
@@ -46,7 +46,19 @@ class Treasure < ActiveRecord::Base
     end
 
     # only return the top 5 ...
-    people.keys.collect { |k| [k, people[k]] }.sort { |a,b| b[1] <=> a[1] }.slice(0,5).to_json
+    people.keys.collect { |k| [k, people[k]] }.sort { |a,b| b[1] <=> a[1] }.slice(0,5)
+  end
+
+  def self.top_artists
+    artists = {}
+
+    self.all.each do |t|
+      artists[t.artist] ||= 0
+      artists[t.artist] += 1
+    end
+
+    # only return the top 5 ...
+    artists.keys.collect { |k| [k, artists[k]] }.sort { |a,b| b[1] <=> a[1] }.slice(0,5)
   end
 
 end
