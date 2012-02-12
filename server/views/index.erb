@@ -118,7 +118,13 @@
         <% Treasure.all.each do |t| %>
           <tr>
             <td><img src="/images/play.jpg" style="height:20px; width:20px;"></td>
-            <td><%= t.track.slice(0,20) %></td>
+            <td><%= 
+              if t.track.length > 0
+                "#{t.track.slice(0,20)}..." 
+              else
+                t.track
+              end
+            %></td>
             <td><%= t.artist %></td>
             <td><%= t.person %></td>
             <td><%= t.origin %></td>
