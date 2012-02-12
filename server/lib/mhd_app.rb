@@ -4,6 +4,7 @@ require 'json'
 require 'net/http'
 require 'nokogiri'
 require 'open-uri'
+require 'timeout'
 
 class MHDApp < Sinatra::Application
 

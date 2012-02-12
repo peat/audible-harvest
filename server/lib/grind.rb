@@ -10,23 +10,28 @@ class MHDApp
   post '/grind' do
     content_type :json
 
-    url = URI.parse( params['url'] )
-    person = params['person']
-    origin = params['origin']
+    out = { :error => "Timeout exceeded processing #{url}" }
 
-    # follow through all redirects!
-    url = follow_redirects( url )
+    # 5 second limit!
+    Timeout::timeout(5) {
+      url = URI.parse( params['url'] )
+      person = params['person']
+      origin = params['origin']
 
-    out = treasure_for( url )
+      # follow through all redirects!
+      url = follow_redirects( url )
 
-    out = out.collect do |t|
-      # add in person, origin, and save it
-      t[:person] = person
-      t[:origin] = origin
-      Treasure.create(t)
+      out = treasure_for( url )
 
-      t
-    end
+      out = out.collect do |t|
+        # add in person, origin, and save it
+        t[:person] = person
+        t[:origin] = origin
+        Treasure.create(t)
+
+        t
+      end
+    }
 
     out.to_json
   end
