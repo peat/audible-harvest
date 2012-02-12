@@ -10,11 +10,11 @@ class MHDApp
   post '/grind' do
     content_type :json
 
-    out = { :error => "Timeout exceeded processing #{url}" }
+    out = { :error => "Timeout exceeded processing #{params['url']}" }
 
-    # 5 second limit!
+    # 10 second limit!
     begin
-      Timeout::timeout(5) {
+      Timeout::timeout(10) {
         url = URI.parse( params['url'] )
         person = params['person']
         origin = params['origin']
@@ -34,7 +34,7 @@ class MHDApp
         end
       }
     rescue => e
-      puts e
+      puts "#{e}, url: #{params['url']}"
     end
 
     out.to_json
