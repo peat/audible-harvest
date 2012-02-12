@@ -1,5 +1,13 @@
 class Treasure < ActiveRecord::Base
 
+  def first_track?
+    (Treasure.where('title=? AND artist=? AND min(id)=?', title, artist, id ).count > 1 )
+  end
+
+  def first_artist?
+    (Treasure.where('artist=? AND min(id)=?', artist, id ).count > 1 )
+  end
+
   def self.provider_data
     providers = {}
 

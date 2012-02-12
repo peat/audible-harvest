@@ -122,14 +122,14 @@
       <table id="music">
         <% Treasure.order("created_at desc").each do |t| %>
           <tr class="track" id="t-<%= t.id %>" data-search="<%= "#{t.track} #{t.artist}" %>">
-            <td><%= 
+            <td <%= 'class="first"' if t.first_track? %>><%= 
               if t.track.length > 20
                 "#{t.track.slice(0,20)}..." 
               else
                 t.track
               end
             %></td>
-            <td><%= t.artist %></td>
+            <td <%= 'class="first"' if t.first_artist? %>><%= t.artist %></td>
             <td style="text-align: center"><%= t.person %></td>
             <td style="text-align: center"><%= t.origin %></td>
             <td style="text-align: center"><%= t.provider %></td>
