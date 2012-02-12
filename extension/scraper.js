@@ -11,11 +11,25 @@ AH = {
   'scannerInterval' : null,
   'facebookActivityFeedTimestamp' : 0,
   'twitterFeedMaxId' : 0,
-  'server' : 'http://falling-ice-2711.heroku.com'
+  'server' : 'http://falling-ice-2711.heroku.com',
+  'queue' : [],
+  'timeout' : null
 }
 
 AH.log = function(m) {
   console.log('AH: ' + m);
+}
+
+AH.processQueue = function() {
+  if (AH.queue.length > 0) {
+    AH.log("Queue Depth: " + AH.queue.length);
+    var msg = AH.queue.shift() // off the front; opposite of pop()    
+    jQuery.post( msg.url, msg.request, function(data) {
+      setTimeout("AH.processQueue()", 100); // try running again  
+    });
+  } else {
+    setTimeout("AH.processQueue()", 10000); // check in 10 seconds
+  }
 }
 
 AH.init = function() {
@@ -39,6 +53,7 @@ AH.init = function() {
   if ( scanner ) {
     AH.log("Starting " + scanner);
     this.scannerInterval = setInterval(scanner, 10000); // 10 seconds
+    setInterval("AH.processQueue()", 10000);
   } else {
     this.log("Couldn't find a scanner for " + hostname);
   }
@@ -136,13 +151,13 @@ AH.facebookExtractTrack = function(ele) {
 AH.recordSnarf = function( person, track, artist, provider, origin ) {
   AH.log("FOUND - Person:" + person + " Track:" + track + " Artist:" + artist + " Provider:" + provider );
   var url = AH.server + "/snarf" 
-  jQuery.post( url, { 'person' : person, 'track' : track, 'artist' : artist, 'provider' : provider, 'origin' : origin } );
+  AH.queue.push( { 'url':url, 'request':{ 'person' : person, 'track' : track, 'artist' : artist, 'provider' : provider, 'origin' : origin } } );
 }
 
 AH.recordGrind = function( person, url, origin ) {
   AH.log("FOUND - Person:" + person + " URL:" + url + " Origin:" + origin );
   var grind_url = AH.server + "/grind" 
-  jQuery.post( grind_url, { 'person' : person, 'url' : url, 'origin' : origin } );
+  AH.queue.push( { 'url':grind_url, 'request': { 'person' : person, 'url' : url, 'origin' : origin } } );
 }
 
 AH.init();
