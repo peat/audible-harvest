@@ -65,7 +65,7 @@ class MHDApp
         res = Net::HTTP.start(host, port) {|http|  http.request(req) } 
         if res.header['location']
           unless res.header['location'] =~ /^http/ # ensure it's an absolute url
-            url = URI.parse("http://#{url.host}:#{url.port}/#{res.header['location']}")
+            url = URI.parse("http://#{url.host}:#{url.port}#{res.header['location']}")
           else
             url = URI.parse(res.header['location']) 
           end
