@@ -12,6 +12,12 @@ Yo, this is in serious development right now. Music Hack Day ends on the evening
 - `server/` contains a Sinatra server for spidering links and aggregating stats.
 - `irc/` contains a bot for monitoring an IRC channel.
 
+## What It Collects
+
+- Facebook: listening shares from Spotify, Turntable.fm, Rhapsody, MOG, and Rdio
+- Twitter: links to SoundCloud, Spotify, and (some) Tumblr audio posts.
+- IRC: links to SoundCloud, Spotify, and (some) Tumblr audio posts.
+
 ## Usage
 
 - Good luck!

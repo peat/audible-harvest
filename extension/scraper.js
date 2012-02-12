@@ -7,7 +7,7 @@
 
 
 AH = {
-  'musicProviders' : [ 'SPOTIFY', 'TURNTABLE', 'RHAPSODY', 'RDIO' ],
+  'musicProviders' : [ 'SPOTIFY', 'TURNTABLE', 'RHAPSODY', 'RDIO', 'MOG' ],
   'scannerInterval' : null,
   'facebookActivityFeedTimestamp' : 0,
   'twitterFeedMaxId' : 0,
