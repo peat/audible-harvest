@@ -67,15 +67,16 @@ class MHDApp
     begin
       raw_follow = "http://api.soundcloud.com/resolve.json?client_id=#{SOUNDCLOUD_CLIENT_ID}&url=#{URI.escape(url.to_s)}"
       follow = URI.parse( raw_follow )
-      puts "XXX follow: #{follow.to_s}, lookup_url: #{lookup_url}"
+      puts "XXX follow: #{follow.to_s}"
       data = JSON.parse( open( follow.to_s ).read )
+      puts "XXX follow: #{data.to_s}"
       treasure = {
         :track => data['title'],
         :artist => data['user']['username'],
         :provider => 'Soundcloud',
       }
 
-      [treasure]
+      return [treasure]
     rescue =>e
       puts "#{e}, follow: #{follow.to_s}, lookup_url: #{lookup_url}"
     end
