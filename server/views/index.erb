@@ -47,7 +47,7 @@
         height: 40px;
       }
 
-      td.first { background-color: #faa; }
+      td.first { background-color: #ada; }
     </style>
 
     <script type="text/javascript">
@@ -132,7 +132,7 @@
               end
             %></td>
             <td <%= 'class="first"' if t.first_artist? %>><%= t.artist %></td>
-            <td style="text-align: center"><%= t.person %></td>
+            <td <%= 'class="first"' if t.first_person? %> style="text-align: center"><%= t.person %></td>
             <td style="text-align: center"><%= t.origin %></td>
             <td style="text-align: center"><%= t.provider %></td>
           </tr>

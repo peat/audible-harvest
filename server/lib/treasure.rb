@@ -1,5 +1,10 @@
 class Treasure < ActiveRecord::Base
 
+  def first_person?
+    people = Treasure.where('person=?', person).order('id')
+    (people.count > 1 and people.first == self)
+  end
+
   def first_track?
     tracks = Treasure.where('artist=? AND track=?', artist, track).order('id')
     (tracks.count > 1 and tracks.first == self)
