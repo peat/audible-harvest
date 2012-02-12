@@ -54,29 +54,28 @@
       google.setOnLoadCallback(drawServiceChart);
       google.setOnLoadCallback(drawPeopleChart);
 
+      var chartOptions = { width: 350, height: 200, is3D: true, chartArea: {top:0, left:0, height:'100%', width:'100%'} };
+
       function drawNetworkChart() {
         var data = new google.visualization.DataTable();
-        data.addRows(<%= Treasure.origin_data %>);
 
         data.addColumn('string', 'Network');
         data.addColumn('number', 'Tracks');
-
-        var options = { width: 350, height: 200, is3D: true, chartArea: {top:0, left:0, height:'100%', width:'100%'} };
+        data.addRows(<%= Treasure.origin_data %>);
 
         var chart = new google.visualization.PieChart(document.getElementById('network-chart'));
-        chart.draw(data, options);
+        chart.draw(data, chartOptions);
       }
 
       function drawServiceChart() {
         var data = new google.visualization.DataTable();
+
         data.addColumn('string', 'Provider');
         data.addColumn('number', 'Tracks');
         data.addRows(<%= Treasure.provider_data %>);
 
-        var options = { width: 350, height: 200, is3D: true, chartArea: {top:0, left:0, height:'100%', width:'100%'} };
-
         var chart = new google.visualization.PieChart(document.getElementById('service-chart'));
-        chart.draw(data, options);
+        chart.draw(data, chartOptions);
       }
 
       function drawPeopleChart() {
@@ -90,10 +89,8 @@
           ['Tumblr',  5]
         ]);
 
-        var options = { width: 350, height: 200, is3D: true, chartArea: {top:0, left:0, height:'100%', width:'100%'} };
-
         var chart = new google.visualization.PieChart(document.getElementById('people-chart'));
-        chart.draw(data, options);
+        chart.draw(data, chartOptions);
       }
     </script>
 
