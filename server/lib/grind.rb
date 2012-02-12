@@ -23,7 +23,7 @@ class MHDApp
       # add in person, origin, and save it
       t[:person] = person
       t[:origin] = origin
-      Target.create(t)
+      Treasure.create(t)
 
       t
     end
