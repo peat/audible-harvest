@@ -83,25 +83,29 @@ class MHDApp
   end
 
   def grind_spotify( url )
-    # change 'http://open.spotify.com/album/43uj7422MLR9MRBXSki0El' into 'spotify:album:43uj7422MLR9MRBXSki0El'
-    path_fragments = url.path.split('/').join(":")
-    spotify_uri = "spotify#{path_fragments}"
+    begin
+      # change 'http://open.spotify.com/album/43uj7422MLR9MRBXSki0El' into 'spotify:album:43uj7422MLR9MRBXSki0El'
+      path_fragments = url.path.split('/').join(":")
+      spotify_uri = "spotify#{path_fragments}"
 
-    # use spotify lookup for rich XML info; be sure to include track info
-    lookup_url = "http://ws.spotify.com/lookup/1/?uri=#{spotify_uri}&extras=track"
-    doc = Nokogiri::XML(open(lookup_url))
+      # use spotify lookup for rich XML info; be sure to include track info
+      lookup_url = "http://ws.spotify.com/lookup/1/?uri=#{spotify_uri}&extras=track"
+      doc = Nokogiri::XML(open(lookup_url))
 
-    # use only the first track and artist it finds
-    track = doc.css('track>name').first.text.strip
-    artist = doc.css('track>artist').first.text.strip
+      # use only the first track and artist it finds
+      track = doc.css('track>name').first.text.strip
+      artist = doc.css('track>artist').first.text.strip
 
-    treasure = {
-      :track => track,
-      :artist => artist,
-      :provider => 'Spotify'
-    }
+      treasure = {
+        :track => track,
+        :artist => artist,
+        :provider => 'Spotify'
+      }
 
-    [treasure]
+      [treasure]
+    rescue => e
+      puts "#{e}, url: #{url.to_s}, lookup_url: #{lookup_url}"
+    end
   end
 
   def grind_tumblr( url )
