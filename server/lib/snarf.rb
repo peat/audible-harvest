@@ -1,17 +1,23 @@
 class MHDApp
-  get "/" do
-    redirect "/resource.html"
+
+  get '/' do
+    erb :'index'
   end
 
-  get '/resource.html' do
-    erb :'resource'
+  get '/snarf.html' do
+    erb :'snarf'
   end
-  
-  get '/resource' do
+
+  post '/snarf' do
     content_type :json
 
-    response = { :hello => "world" }
+    person = params['person']
+    track = params['track']
+    artist = params['artist']
+    provider = params['provider']
+    origin = params['origin']
 
-    response.to_json
+    { :person => person, :track => track, :provider => provider, :origin => origin }.to_json
   end
+
 end
