@@ -107,30 +107,12 @@
     </script>
 
     <script>
-      var client_id = 'aba5e923e867c06bdda5e282e933341d';        
-
-      function runPlayer( data ) {
-        console.log('RUN PLAYER');
-        var download_url = data.download_url
-        if ( download_url ) {
-          var full_url = download_url + "?client_id=" + client_id;
-          console.log("Playing: " + full_url);
-          $('#player audio').attr('src', full_url);
-        }
-      }
-
-      function getTrack( search ) {
-        $.get(
-          'http://api.soundcloud.com/tracks.json', 
-          { 'client_id' : client_id, 'q' : search },
-          function(data) { runPlayer( data[0] ) } 
-        );
-      }
 
       $().ready(function() {
         $('.track').click( function() {
           var search = $(this).attr('data-search');
-          getTrack( search );
+          var searchUrl = "http://soundcloud.com/search?q=" + encodeURI(search);
+          window.open(searchUrl);
         })
       });
     </script>
@@ -141,10 +123,6 @@
     </header>
 
     <div id="sidebar">
-
-      <div id="player">
-        <audio controls="controls" autoplay="autoplay"></audio>
-      </div>
 
       <h3>Social Networks</h3>
       <div id="network-chart"></div>
